@@ -22,7 +22,10 @@ self.addEventListener('fetch', function (event) {
       || url.origin.startsWith('chrome-extension')){
     return false;
   }
+  else {
 
-  // your code here
+    // your code here
+
+  }
 
 });
