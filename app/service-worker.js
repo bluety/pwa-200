@@ -151,6 +151,7 @@ self.addEventListener('fetch', function (event) {
 
     if (url.pathname.endsWith('jpg')) {
       event.respondWith(fetch(catImage));
+      return false;
     }
 
     // exercice 5-2: add your code here
