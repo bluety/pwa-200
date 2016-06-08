@@ -147,10 +147,11 @@ self.addEventListener('fetch', function (event) {
       || url.origin.startsWith('chrome-extension')){
     return false;
   }
-  else if (url.pathname.endsWith('jpg')) {
-    event.respondWith(fetch(catImage));
-  }
   else {
+
+    if (url.pathname.endsWith('jpg')) {
+      event.respondWith(fetch(catImage));
+    }
 
     // exercice 5-2: add your code here
 
