@@ -32,7 +32,6 @@
         </a>
         <span flex=""></span>
         <a href="#/people" class="toolbar-menu" layout="row" layout-align="center center"><h1>People</h1></a>
-
       </div>
     </md-toolbar>
   </header>
@@ -49,11 +48,89 @@
 
   <!-- here your script for init service worker -->
   <script>
+  let swRegistration = null;
+
   if (navigator.serviceWorker) {
-    navigator.serviceWorker.register('service-worker.js').then(function () {
+    navigator.serviceWorker.register('service-worker.js').then(function (swReg) {
       console.log('Service worker installed');
+      swRegistration = swReg;
+      initializeUI();
     });
   }
+
+  function initializeUI() {
+    swRegistration.pushManager.getSubscription()
+    .then(function(subscription) {
+      isSubscribed = !(subscription === null);
+
+      updateSubscriptionOnServer(subscription);
+
+      if (isSubscribed) {
+        console.log('User IS subscribed.');
+      } else {
+        subscribeUser();
+        console.log('User is NOT subscribed.');
+      }
+    });
+  }
+
+  function updateSubscriptionOnServer(subscription) {
+    if (subscription) {
+      console.log(JSON.stringify(subscription));
+    }
+  }
+
+  function urlB64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+      .replace(/\-/g, '+')
+      .replace(/_/g, '/');
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  }
+
+  function subscribeUser() {
+    const applicationServerKey = urlB64ToUint8Array('BBIrJ5KVkB1tioZZY_oLPX2ROL3cJn2Mb8mPCYHRC9URVEc8YwryavYJbS5pP_90sRcw_VKzbwd_IVFQCRCfTGI');
+    swRegistration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: applicationServerKey
+    })
+    .then(function(subscription) {
+      console.log('User is subscribed.');
+
+      updateSubscriptionOnServer(subscription);
+
+      isSubscribed = true;
+    })
+    .catch(function(err) {
+      console.log('Failed to subscribe the user: ', err);
+    });
+  }
+
+  function unsubscribeUser() {
+    swRegistration.pushManager.getSubscription()
+    .then(function(subscription) {
+      if (subscription) {
+        return subscription.unsubscribe();
+      }
+    })
+    .catch(function(error) {
+      console.log('Error unsubscribing', error);
+    })
+    .then(function() {
+      updateSubscriptionOnServer(null);
+
+      console.log('User is unsubscribed.');
+      isSubscribed = false;
+    });
+  }
+  
   const installButton = document.getElementById('installButton');
   window.addEventListener('beforeinstallprompt', function (e) {
     e.preventDefault();

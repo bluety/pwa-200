@@ -1,5 +1,20 @@
 console.log('Service worker ok =D');
 
+function urlB64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, '+')
+    .replace(/_/g, '/');
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
 var cacheAppShellStatic = [
   "css/font/bold.eot",
   "css/font/bold.ttf",
@@ -181,5 +196,15 @@ self.addEventListener('push', function(event) {
       icon: 'img/cat.jpg',
       tag: 'tag'
     })
+  );
+});
+
+self.addEventListener('notificationclick', function(event) {
+  console.log('[Service Worker] Notification click Received.');
+
+  event.notification.close();
+
+  event.waitUntil(
+    clients.openWindow('https://developers.google.com/web/')
   );
 });

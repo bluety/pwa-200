@@ -13,6 +13,7 @@ var fs = require('fs');
 var del = require('del');
 var browserSync = require('browser-sync').create();
 
+const workboxBuild = require('workbox-build');
 
 gulp.task('copy', ['clean'], function build() {
     var fonts = gulp.src(['app/css/font/*'])
@@ -108,6 +109,17 @@ gulp.task('clean', function(cb) {
     return del('build');
 });
 
+gulp.task('workboxBuild', function(cb) {
+    return workboxBuild.generateSW({
+        globDirectory: 'build',
+        globPatterns: [
+            '**\/*.{html,json,js,css}',
+        ],
+        swDest: 'build/service-worker.js',
+    });
+
+});
+
 gulp.task('default', ['watch']);
-gulp.task('sw-ready', ['connect-build', 'copy', 'usemin', 'update-sw']);
+gulp.task('sw-ready', ['connect-build', 'copy', 'usemin', 'update-sw', 'workboxBuild']);
 gulp.task('deploy', ['gh-pages']);
