@@ -250,12 +250,15 @@ section > h1 {
 
 /* FAB */
 .md-fab.md-install{
+  display: none;
   background-color: #0168AB !important;
   position: absolute !important;
   bottom: 5px;
   right: 10px;
 }
-
+.md-fab.md-install.show {
+  display: block;
+}
 /* SUBSCRIPTION */
 #subscribeButton {
   display: none !important;
