@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en" ng-app="peopleApp">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,6 +20,7 @@
 
   <link rel="shortcut icon" href="/img/favicon.ico">
 </head>
+
 <body>
 
   <header>
@@ -28,7 +30,9 @@
           <img src="img/logo-sfeir.svg" aria-label="sfeir" alt="Sfeir">
         </a>
         <span flex=""></span>
-        <a href="#/people" class="toolbar-menu" layout="row" layout-align="center center"><h1>People</h1></a>
+        <a href="#/people" class="toolbar-menu" layout="row" layout-align="center center">
+          <h1>People</h1>
+        </a>
 
       </div>
     </md-toolbar>
@@ -40,12 +44,11 @@
 
   <!-- here your script for init service worker -->
   <script>
-  if (navigator.serviceWorker) {
+    if (navigator.serviceWorker) {
 
-    navigator.serviceWorker.register('service-worker.js').then(function () {
-      console.log('Service worker installed');
-    });
-  }
+      navigator.serviceWorker.register('service-worker.js');
+    }
+
   </script>
 
   <!-- build:js(node_modules) js/vendor.js-->
@@ -79,4 +82,5 @@
   <script src="js/skills/skills.controller.js"></script>
   <!-- endbuild -->
 </body>
+
 </html>
