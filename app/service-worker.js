@@ -24,8 +24,7 @@ var cacheAppShellStatic = [
   "/js/components/components.module.js",
   "/js/components/services/people.service.js",
   "/js/components/directives/people-card/people-card.js",
-  "/js/components/filters/capitalize.js",
-  "/offline.html"
+  "/js/components/filters/capitalize.js"
 ];
 
 self.addEventListener('install', function (event) {
