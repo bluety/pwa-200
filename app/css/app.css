@@ -256,8 +256,9 @@ section > h1 {
   bottom: 5px;
   right: 10px;
 }
-.md-fab.md-install.show {
-  display: block;
+
+.md-fab.md-install.show{
+  display: block !important;
 }
 /* SUBSCRIPTION */
 #subscribeButton {
