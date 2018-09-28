@@ -258,7 +258,7 @@ section > h1 {
 }
 
 .md-fab.md-install.show{
-  display: block;
+  display: block !important;
 }
 
 /* SUBSCRIPTION */
